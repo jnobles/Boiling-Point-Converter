@@ -1,0 +1,25 @@
+[project]
+name = "boiling-point-converter"
+version = "0.1.0"
+description = "TUI application for Clausius-Clapeyron boiling point calculations."
+requires-python = ">=3.12"
+
+dependencies = [
+    "textual>=0.70",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "hypothesis"
+]
+
+dist = [
+    "pyinstaller"
+]
+
+[tool.ruff.lint]
+extend-select = [
+    "E501",  # Add "line too long" rule to set
+]
