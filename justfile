@@ -15,3 +15,6 @@ clean: setup lint format
 build: setup
     uv build
     uv run pyinstaller pyinstaller.spec
+
+setup
+    uv run pytest -v
