@@ -2,10 +2,10 @@
 
 
 a = Analysis(
-    ['src\\boiling_point_converter_app.py'],
-    pathex=[],
+    ['pyinstaller_entry.py'],
+    pathex=['src'],
     binaries=[],
-    datas=[('src/styles.tcss', '.')],
+    datas=[('src/boiling_point_converter/styles.tcss', 'boiling_point_converter')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -46,5 +46,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['src\\assets\\icon.ico'],
+    icon=['src/assets/icon.ico'],
 )
