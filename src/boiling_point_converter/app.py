@@ -1,3 +1,5 @@
+from importlib.resources import files
+
 from textual import on
 from textual.app import App, Binding, ComposeResult
 from textual.containers import Grid, Vertical
@@ -30,7 +32,7 @@ from .widgets import LabeledInput
 class BoilingPointConverterApp(App):
     BINDINGS = [Binding("ctrl+q", "quit", "Quit", show=True, priority=True)]
 
-    CSS_PATH = "styles.tcss"
+    CSS_PATH = files("boiling_point_converter").joinpath("styles.tcss")
 
     p1_input: Input
     t1_input: Input
