@@ -1,6 +1,5 @@
-set shell := ['powershell.exe', '-c']
-
 set default-list := true
+set windows-powershell := true
 
 setup:
     uv sync --extra dev
