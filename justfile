@@ -4,17 +4,17 @@ set windows-powershell := true
 setup:
     uv sync --extra dev
 
-lint: setup
+lint:
     uv run ruff check --fix .
 
-format: setup
+format:
     uv run ruff format .
     
-clean: setup lint format
+clean: lint format
 
-build: setup
+build:
     uv build
     uv run pyinstaller pyinstaller.spec
 
-setup
+test:
     uv run pytest -v

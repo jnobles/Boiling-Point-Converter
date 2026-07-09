@@ -33,10 +33,5 @@ packages = [
     "src/boiling_point_converter"
 ]
 
-[tool.ruff.lint]
-extend-select = [
-    "E501",  # Add "line too long" rule to set
-]
-
 [tool.uv]
 python-downloads = "manual"
