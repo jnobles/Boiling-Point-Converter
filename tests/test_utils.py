@@ -38,7 +38,7 @@ def test_round_trip_calculation(t1, p1, t2):
     assert t2 == pytest.approx(result)
 
 
-def test_same_presure_returns_same_temperature():
+def test_same_pressure_returns_same_temperature():
     result = calculate_temperature_at_pressure(760, 100, 760, 40.65)
 
     assert result == pytest.approx(100)

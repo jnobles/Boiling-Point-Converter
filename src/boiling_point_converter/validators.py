@@ -35,7 +35,7 @@ class PressureValidator(FloatValidator):
 
     def validate_number(self, number: float) -> str | None:
         if number <= 0:
-            return "Pressure cannot be negative."
+            return "Pressure must be greater than zero."
 
 
 class TemperatureValidator(FloatValidator):
@@ -43,8 +43,8 @@ class TemperatureValidator(FloatValidator):
         super().__init__(field_name="Temperature")
 
     def validate_number(self, number: float) -> str | None:
-        if number < -K:
-            return "Temperature cannot be below absolute zero."
+        if number <= -K:
+            return "Temperature must be greater than absolute zero."
 
 
 class HeatOfVaporizationValidator(FloatValidator):
@@ -53,4 +53,4 @@ class HeatOfVaporizationValidator(FloatValidator):
 
     def validate_number(self, number: float) -> str | None:
         if number < 0:
-            return "Heat of vaporization cannot be negative."
+            return "Heat of vaporization must be non-negative."
