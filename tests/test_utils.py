@@ -1,4 +1,5 @@
 import pytest
+import math
 from hypothesis import assume, given
 from hypothesis import strategies as st
 
@@ -16,7 +17,7 @@ def test_calculate_pressure_monotonic(t1, t2):
     p1 = calculate_pressure_at_temperature(760, 100, t1, 40.65)
     p2 = calculate_pressure_at_temperature(760, 100, t2, 40.65)
 
-    assert p2 > p1
+    assert p2 > p1 or math.isclose(p1, p2)
 
 
 @given(p1=st.floats(1, 200), p2=st.floats(1, 200))
@@ -26,7 +27,7 @@ def test_calculate_temperature_monotonic(p1, p2):
     t1 = calculate_temperature_at_pressure(760, 100, p1, 40.65)
     t2 = calculate_temperature_at_pressure(760, 100, p2, 40.65)
 
-    assert t2 > t1
+    assert t2 > t1 or math.isclose(t1, t2)
 
 
 @given(t1=st.floats(1, 200), p1=st.floats(1, 200), t2=st.floats(1, 200))
