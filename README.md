@@ -58,6 +58,10 @@ Select the compound (or similar) from the list of saved molar enthalpies of vapo
 
 ![Screenshot of the TUI after calculation](/docs/TUI_calculation_screenshot.png)
 
+## License
+
+This project is licensed under the MIT license.  See LICENSE.txt for exact terms.
+
 ## Acknowledgement
 
 Thank you to Witek Mozga for inspiring this personal project with their [Physicochemical Calculators](http://nowa.trimen.pl/witek/kalkulatory/index.html).
