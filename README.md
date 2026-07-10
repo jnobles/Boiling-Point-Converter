@@ -6,6 +6,13 @@ The Temperature-Pressure Conversion Calculator is a terminal user interface (TUI
 \ln\left(\frac{P_1}{P_0}\right)=\frac{L}{R}\left(\frac{1}{T_0}-\frac{1}{T_1}\right)
 ```
 
+## Features
+
+- Calculate the boiling point at a target pressure
+- Calculate the pressure required to achieve a target boiling point
+- Built-in heats of vaporization for common solvents
+- TUI built using Textual
+
 ## Installation
 
 ### Windows executable
