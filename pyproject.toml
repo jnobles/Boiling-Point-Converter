@@ -33,5 +33,10 @@ packages = [
     "src/boiling_point_converter"
 ]
 
+[tool.ruff.lint]
+extend-select = [
+    "I"
+]
+
 [tool.uv]
 python-downloads = "manual"

@@ -1,5 +1,6 @@
-import pytest
 import math
+
+import pytest
 from hypothesis import assume, given
 from hypothesis import strategies as st
 

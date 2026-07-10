@@ -2,9 +2,9 @@ import pytest
 
 from boiling_point_converter.validators import (
     FloatValidator,
+    HeatOfVaporizationValidator,
     PressureValidator,
     TemperatureValidator,
-    HeatOfVaporizationValidator,
 )
 
 
