@@ -9,8 +9,6 @@ lint:
 
 format:
     uv run ruff format .
-    
-clean: lint format
 
 build:
     uv build
@@ -18,3 +16,7 @@ build:
 
 test:
     uv run pytest -v
+
+release: test build
+    uv run pip-license
+    tar.exe acvf dist/Temperature-Pressure\ Calculator.zip -C dist Temperature-Pressure\ Calculator.exe -C .. LICENSE.txt THIRDPARTYLICENSES.txt
