@@ -16,7 +16,6 @@ name = "boiling-point-converter"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "pip-licenses" },
     { name = "textual" },
 ]
 
@@ -40,7 +39,6 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "hypothesis", marker = "extra == 'dev'" },
-    { name = "pip-licenses", specifier = ">=5.5.5" },
     { name = "pyinstaller", marker = "extra == 'dev'" },
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "ruff", marker = "extra == 'dev'" },

@@ -5,9 +5,10 @@ setup:
     uv sync --extra dev
 
 lint:
-    uv run ruff check --fix .
+    uv run ruff check .
 
-format:
+fix:
+    uv run ruff check --fix .
     uv run ruff format .
 
 build:
