@@ -2,7 +2,7 @@ set default-list := true
 set windows-powershell := true
 
 setup:
-    uv sync --extra dev
+    uv sync --group dev
 
 lint:
     uv run ruff check .

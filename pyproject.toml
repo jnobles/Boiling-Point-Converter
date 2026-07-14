@@ -7,7 +7,9 @@ version = "0.1.0"
 description = "TUI application for Clausius-Clapeyron boiling point calculations."
 requires-python = ">=3.12"
 dependencies = ["textual>=0.70"]
-license = {file = "LICENSE.txt"}
+license = "MIT"
+license-files = ["LICENSE.txt"]
+readme = "README.md"
 classifiers = [
     "Private :: Do Not Upload",
     "License :: OSI Approved :: MIT License"
@@ -16,13 +18,8 @@ classifiers = [
 [project.scripts]
 boiling-point-converter = "boiling_point_converter.__main__:main"
 
-[project.optional-dependencies]
-dev = [
-    "pytest",
-    "ruff",
-    "hypothesis",
-    "pyinstaller"
-]
+[project.urls]
+repository = "https://github.com/jnobles/Temperature-Pressure-Calculator"
 
 [build-system]
 requires = ["hatchling"]
