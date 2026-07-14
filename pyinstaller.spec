@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['pyinstaller_entry.py'],
+    ['scripts/pyinstaller_entry.py'],
     pathex=['src'],
     binaries=[],
     datas=[('src/boiling_point_converter/styles.tcss', 'boiling_point_converter')],
