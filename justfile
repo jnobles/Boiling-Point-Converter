@@ -7,19 +7,25 @@ setup:
 lint:
     uv run ruff check .
 
-fix:
-    uv run ruff check --fix .
+format:
     uv run ruff format .
 
-build: test
-    uv build
-    uv run pyinstaller pyinstaller.spec
+fix:
+    uv run ruff check --fix .
+    just format
 
 test:
-    uv run pytest -v
+    uv run pytest
 
 check: lint test
 
-release: check build
+build: check
+    uv build
+    uv run pyinstaller pyinstaller.spec
+
+release: build
     uv run pip-licenses
-    tar.exe acvf "dist/Temperature-Pressure Boiling Point Converter.zip" -C dist "Temperature-Pressure Boiling Point Converter.exe" -C .. LICENSE.txt THIRD_PARTY_LICENSES.txt
+    uv run scripts/package.py
+
+clean:
+    uv run scripts/clean.py
