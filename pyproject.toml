@@ -44,9 +44,22 @@ no-license-path = true
 
 [dependency-groups]
 dev = [
+    "coverage>=7.15.1",
     "hypothesis>=6.156.1",
     "just>=0.8.165",
     "pip-licenses>=5.5.5",
     "pyinstaller>=6.21.0",
     "pytest>=9.1.1",
+    "ruff>=0.15.20",
 ]
+
+[tool.coverage.run]
+source = ["boiling_point_converter"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.coverage.html]
+skip_covered = false

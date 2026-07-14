@@ -1,7 +1,7 @@
 import shutil
 from pathlib import Path
 
-for path in ("build", "dist", ".pytest_cache", ".ruff_cache", ".hypothesis"):
+for path in ("build", "dist", ".pytest_cache", ".ruff_cache", ".hypothesis", "htmlcov"):
     shutil.rmtree(path, ignore_errors=True)
 
 for path in Path(".").rglob("__pycache__"):

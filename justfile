@@ -17,7 +17,7 @@ fix:
 test:
     uv run pytest
 
-check: lint test
+check: lint coverage
 
 build: check
     uv build
@@ -29,3 +29,9 @@ release: build
 
 clean:
     uv run scripts/clean.py
+    uv run coverage erase
+
+coverage:
+    uv run coverage run -m pytest
+    uv run coverage report
+    uv run coverage html
