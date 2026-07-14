@@ -13,6 +13,19 @@ The Temperature-Pressure Conversion Calculator is a terminal user interface (TUI
 - Built-in heats of vaporization for common solvents
 - TUI built using Textual
 
+## Limitations
+
+The integrated Clausius–Clapeyron equation used by this calculator relies on the following assumptions:
+
+- the vapor phase acts as an ideal gas
+- the molar volume of the liquid phase is negligible in comparison with the molar volume of the vapor phase
+- the molar enthalpy change is constant across the temperature range
+
+This leads to the following limitations:
+
+- the relation can only be used for liquid-vapor transitions
+- the estimation becomes less accurate as the temperature difference between the reference state and the target state increases
+
 ## Installation
 
 ### Windows executable
@@ -49,7 +62,7 @@ to launch the TUI.
 
 ![Screenshot of the TUI on running](/docs/TUI_screenshot.png)
 
-Enter the temperature and pressure of the known boiling point.  Then select and enter either
+Enter the temperature and pressure of the known boiling point.  Then specify either
 
 - A target temperature (to calculate the required pressure to achieve that boiling point) 
 - A target pressure (to calculate the new boiling point at that pressure).  
@@ -68,6 +81,6 @@ Thank you to Witek Mozga for inspiring this personal project with their [Physico
 
 ## References
 
-Default standard molar enthalpies of vaporization included are taken from:
+Default standard molar enthalpies of vaporization are taken from:
 
 - Burgess, D. and Hamins, A. (2023), Heats of Combustion and Related Properties of Pure Substances, Technical Note (NIST TN), National Institute of Standards and Technology, Gaithersburg, MD, [online], https://doi.org/10.6028/NIST.TN.2126
