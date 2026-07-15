@@ -90,11 +90,11 @@ class TemperatureValidator(FloatValidator):
 
 
 class HeatOfVaporizationValidator(FloatValidator):
-    """Validate that a molar heat of vaporization is non-negative."""
+    """Validate that a molar heat of vaporization is greater than zero."""
 
     def __init__(self):
         super().__init__(field_name="Heat of Vaporization")
 
     def validate_number(self, number: float) -> str | None:
         if number < 0:
-            return "Heat of vaporization must be non-negative."
+            return "Heat of vaporization must be greater than zero."
