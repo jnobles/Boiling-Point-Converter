@@ -1,3 +1,9 @@
+"""Provides the main entry-point for the TUI.
+
+Starts the TUI, displaying an optional splashscreen during unpacking if
+run using the PyInstaller generated executable.
+"""
+
 from .app import BoilingPointConverterApp
 
 

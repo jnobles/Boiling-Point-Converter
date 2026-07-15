@@ -15,7 +15,7 @@ from textual.widgets import (
 )
 from textual.widgets.option_list import Option
 
-from .molar_heat_of_vaporization import DH_VAP_TABLE
+from .molar_heat_of_vaporization import REFERENCE_HEATS_OF_VAPORIZATION
 from .utils import (
     calculate_pressure_at_temperature,
     calculate_temperature_at_pressure,
@@ -88,8 +88,8 @@ class BoilingPointConverterApp(App):
 
     def compose(self) -> ComposeResult:
         option_list = []
-        for item in DH_VAP_TABLE:
-            option_list.append(Option(item.compound, id=str(item.dH)))
+        for item in REFERENCE_HEATS_OF_VAPORIZATION:
+            option_list.append(Option(item.compound, id=str(item.dh_vap_kj_per_mol)))
         option_list.append(None)
         option_list.append(Option("** Custom Heat of Vaporization **"))
 

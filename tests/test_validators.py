@@ -127,7 +127,7 @@ class TestHeatOfVaporizationValidator:
 
         assert result.is_valid is False
         assert result.failure_descriptions == [
-            "Heat of vaporization must be non-negative."
+            "Heat of vaporization must be greater than zero."
         ]
 
     @pytest.mark.parametrize(
