@@ -15,7 +15,10 @@ from textual.widgets import (
 )
 from textual.widgets.option_list import Option
 
-from .molar_heat_of_vaporization import REFERENCE_HEATS_OF_VAPORIZATION
+from .molar_heat_of_vaporization import (
+    REFERENCE_HEATS_OF_VAPORIZATION,
+    REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND,
+)
 from .utils import (
     calculate_pressure_at_temperature,
     calculate_temperature_at_pressure,
@@ -44,11 +47,13 @@ class BoilingPointConverterApp(App):
 
     @on(OptionList.OptionSelected)
     def update_dh_vap(self, event: OptionList.OptionSelected) -> None:
-        if event.option.prompt == "** Custom Heat of Vaporization **":
+        if event.option.id == "custom-dHvap":
             self.dh_vap_input.disabled = False
             self.dh_vap_input.value = ""
         else:
-            self.dh_vap_input.value = event.option_id
+            self.dh_vap_input.value = str(
+                REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND[event.option_id]
+            )
             self.dh_vap_input.disabled = True
 
     @on(Button.Pressed, "#calculate")
@@ -89,9 +94,11 @@ class BoilingPointConverterApp(App):
     def compose(self) -> ComposeResult:
         option_list = []
         for item in REFERENCE_HEATS_OF_VAPORIZATION:
-            option_list.append(Option(item.compound, id=str(item.dh_vap_kj_per_mol)))
+            option_list.append(Option(item.compound, id=item.compound))
         option_list.append(None)
-        option_list.append(Option("** Custom Heat of Vaporization **"))
+        option_list.append(
+            Option("** Custom Heat of Vaporization **", id="custom-dHvap")
+        )
 
         yield Header()
         yield Footer()
@@ -144,10 +151,11 @@ class BoilingPointConverterApp(App):
 
         self.p1_input.focus()
 
-        water_index = next(
-            i
-            for i, option in enumerate(self.dh_vap_option_list.options)
-            if "water" in option.prompt.lower()
+        self.dh_vap_option_list.highlighted = self.dh_vap_option_list.get_option_index(
+            "water"
         )
-        self.dh_vap_option_list.highlighted = water_index
-        self.dh_vap_input.value = self.dh_vap_option_list.highlighted_option.id
+        self.dh_vap_input.value = str(
+            REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND[
+                self.dh_vap_option_list.highlighted_option.id
+            ]
+        )

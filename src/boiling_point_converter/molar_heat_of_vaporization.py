@@ -41,3 +41,7 @@ REFERENCE_HEATS_OF_VAPORIZATION = sorted(
     ],
     key=lambda item: item.compound,
 )
+
+REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND = {
+    item.compound: item.dh_vap_kj_per_mol for item in REFERENCE_HEATS_OF_VAPORIZATION
+}
