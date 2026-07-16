@@ -43,7 +43,7 @@ class BoilingPointConverterApp(App):
     result_label: Label
 
     @on(OptionList.OptionSelected)
-    def update_dh_vap(self, event: OptionList.OptionHighlighted) -> None:
+    def update_dh_vap(self, event: OptionList.OptionSelected) -> None:
         if event.option.prompt == "** Custom Heat of Vaporization **":
             self.dh_vap_input.disabled = False
             self.dh_vap_input.value = ""
