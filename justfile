@@ -21,9 +21,10 @@ check: lint coverage
 
 build: check
     uv build
-    uv run pyinstaller pyinstaller.spec
 
+[windows]
 release: build
+    uv run pyinstaller pyinstaller.spec
     uv run pip-licenses
     uv run scripts/package.py
 
@@ -35,3 +36,6 @@ coverage:
     uv run coverage run -m pytest
     uv run coverage report
     uv run coverage html
+
+temp:
+    @uv run git-cliff  --bumped-version
