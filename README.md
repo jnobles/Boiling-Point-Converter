@@ -1,6 +1,6 @@
-# Temperature-Pressure Conversion Calculator
+# Boiling Point Converter
 
-The Temperature-Pressure Conversion Calculator is a terminal user interface (TUI) calculator for quickly using the Clausius–Clapeyron relation to estimate boiling point depression/elevation under varying temperatures and pressures.  Several standard molar enthalpies of evaporation are provided for common solvents.
+The Boiling Point Converter is a terminal user interface (TUI) calculator for quickly using the Clausius–Clapeyron relation to estimate boiling point depression/elevation under varying temperatures and pressures.  Several standard molar enthalpies of evaporation are provided for common solvents.
 
 ```math
 \ln\left(\frac{P_1}{P_0}\right)=\frac{L}{R}\left(\frac{1}{T_0}-\frac{1}{T_1}\right)

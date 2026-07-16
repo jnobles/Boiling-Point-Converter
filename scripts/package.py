@@ -5,7 +5,7 @@ from pathlib import Path
 dist_dir = Path("dist")
 root_dir = Path(".")
 target_file_list = [
-    dist_dir / "Temperature-Pressure Boiling Point Converter.exe",
+    dist_dir / "Boiling Point Converter.exe",
     root_dir / "LICENSE.txt",
     root_dir / "THIRD_PARTY_LICENSES.txt",
 ]
@@ -20,7 +20,7 @@ if failed:
     print("Required files are missing... Aborting.")
     sys.exit(1)
 
-zip_path = dist_dir / "Temperature-Pressure-Boiling-Point-Converter.zip"
+zip_path = dist_dir / "Boiling-Point-Converter.zip"
 
 print("Creating distribution archive...")
 

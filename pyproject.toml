@@ -19,7 +19,7 @@ classifiers = [
 boiling-point-converter = "boiling_point_converter.__main__:main"
 
 [project.urls]
-repository = "https://github.com/jnobles/Temperature-Pressure-Calculator"
+repository = "https://github.com/jnobles/Boiling-Point-Converter"
 
 [build-system]
 requires = ["hatchling"]
