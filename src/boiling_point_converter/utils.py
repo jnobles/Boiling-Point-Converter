@@ -9,8 +9,14 @@ temperature range.
 """
 
 import math
+from enum import Enum
 
 from .constants import GAS_CONSTANT_J_PER_MOL_K, KELVIN_CELSIUS_OFFSET
+
+
+class SolverMode(Enum):
+    PRESSURE = "pressure"
+    TEMPERATURE = "temperature"
 
 
 def calculate_temperature_at_pressure(
@@ -32,7 +38,7 @@ def calculate_temperature_at_pressure(
         Celsius.
     :param target_pressure_torr: The target pressure in torr.
     :param dh_vap_kj_per_mol: The molar heat of vaporization of the
-        reference substance, measured in kilojoules per mole Kelvin.
+        reference substance, measured in kilojoules per mole.
     :returns: The target temperature in degrees Celsius.
     """
 
@@ -68,7 +74,7 @@ def calculate_pressure_at_temperature(
     :param target_temperature_c: The target temperature in degrees
         Celsius.
     :param dh_vap_kj_per_mol: The molar heat of vaporization to use for
-        the estimation, measures in kilojoules.
+        the estimation, measured in kilojoules per mole.
     :returns: The target pressure in torr.
     """
 
@@ -84,17 +90,64 @@ def calculate_pressure_at_temperature(
     return calculated_pressure_torr
 
 
-def format_output(p1: float, t1: float, p2: float, t2: float, dh_vap: float) -> str:
-    """Perform multiline formatting of Clausius-Clapeyron relation values.
+_CALCULATORS = {
+    SolverMode.PRESSURE: calculate_temperature_at_pressure,
+    SolverMode.TEMPERATURE: calculate_pressure_at_temperature,
+}
 
+
+def perform_calculation(
+    mode: str | SolverMode,
+    p1: float,
+    t1: float,
+    at_value: float,
+    dh_vap: float,
+) -> float:
+    """Perform a Clausius-Clapeyron estimation.
+
+    :param mode: The requested solver mode as ``SolverMode`` or matching
+        string.
     :param p1: The reference pressure in torr.
     :param t1: The reference temperature in degrees Celsius.
-    :param p2: The target pressure in torr.
-    :param t2: The target temperature in degrees Celsius.
-    :param dh_vap: The molar heat of vaporization to use for the estimate.
-    :returns: A formatted multiline string suitable for application
-        display.
+    :param at_value: The target temperature or pressure, based on ``mode``.
+    :param dh_vap: The molar heat of vaporization to use for the
+        estimation, measured in kilojoules per mole.
+    :returns: The estimated temperature or pressure, based on ``mode``.
+    :raises ValueError: If ``mode`` is not a valid ``SolverMode``.
     """
+    mode = SolverMode(mode.lower())
+    return _CALCULATORS[mode](p1, t1, at_value, dh_vap)
+
+
+def format_output(
+    mode: str | SolverMode,
+    p1: float,
+    t1: float,
+    at_value: float,
+    result: float,
+    dh_vap: float,
+) -> str:
+    """Format the used values and estimated results for display.
+
+    :param mode: The requested solver mode.
+    :param p1: The reference pressure in torr.
+    :param t1: The reference temperature in degrees Celsius.
+    :param at_value: The target temperature or pressure, based on ``mode``.
+    :param result: The estimated temperature or pressure, based on ``mode``.
+    :param dh_vap: The molar heat of vaporization to use for the
+        estimation, measured in kilojoules per mole.
+    :returns: The formatted, multiline string.
+    :raises ValueError: If ``mode`` is not a valid ``SolverMode``.
+    """
+    mode = SolverMode(mode.lower())
+    if mode is SolverMode.PRESSURE:
+        p2 = at_value
+        t2 = result
+    elif mode is SolverMode.TEMPERATURE:
+        t2 = at_value
+        p2 = result
+    else:
+        raise ValueError(f"Unhandled solver mode: {mode}")
 
     lines = [
         f"Using Heat of Vaporization: {dh_vap} kJ/mol",

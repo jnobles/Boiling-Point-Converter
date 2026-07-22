@@ -20,9 +20,8 @@ from .molar_heat_of_vaporization import (
     REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND,
 )
 from .utils import (
-    calculate_pressure_at_temperature,
-    calculate_temperature_at_pressure,
     format_output,
+    perform_calculation,
 )
 from .validators import (
     HeatOfVaporizationValidator,
@@ -58,27 +57,31 @@ class BoilingPointConverterApp(App):
 
     @on(Button.Pressed, "#calculate")
     def calculate(self, event: Button.Pressed) -> None:
+        try:
+            self._validate_calculation_inputs()
+        except ValueError:
+            return
+        else:
+            p1 = float(self.p1_input.value)
+            t1 = float(self.t1_input.value)
+            dh_vap = float(self.dh_vap_input.value)
+            at_value = float(self.at_value_input.value)
+            mode = self.solver_mode_radioset.pressed_button.id
+            result = perform_calculation(mode, t1, p1, at_value, dh_vap)
+
+            self.result_label.value = format_output(
+                mode, t1, p1, at_value, result, dh_vap
+            )
+
+    def _validate_calculation_inputs(self):
         failing_validation = False
         for item in self.query(Input):
             response = item.validate(item.value)
             if not item.is_valid:
                 self.notify("\n".join(response.failure_descriptions))
                 failing_validation = True
-
         if failing_validation:
-            return
-
-        p1 = float(self.p1_input.value)
-        t1 = float(self.t1_input.value)
-        dh_vap = float(self.dh_vap_input.value)
-        at_value = float(self.at_value_input.value)
-        mode = self.solver_mode_radioset.pressed_button.id
-        if mode == "pressure":
-            result = calculate_temperature_at_pressure(p1, t1, at_value, dh_vap)
-            self.result_label.update(format_output(p1, t1, at_value, result, dh_vap))
-        elif mode == "temperature":
-            result = calculate_pressure_at_temperature(p1, t1, at_value, dh_vap)
-            self.result_label.update(format_output(p1, t1, result, at_value, dh_vap))
+            raise ValueError()
 
     @on(RadioSet.Changed, "#solver-mode")
     def update_solver_mode(self, event: RadioSet.Changed) -> None:
