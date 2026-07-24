@@ -3,6 +3,7 @@ import pytest
 import boiling_point_converter.molar_heat_of_vaporization
 import boiling_point_converter.utils as bp_utils
 from boiling_point_converter.app import BoilingPointConverterApp
+from boiling_point_converter.utils import SolverMode
 
 
 @pytest.mark.asyncio
@@ -32,10 +33,11 @@ async def test_keyboard_workflow_basic():
         )
 
         expected_result = bp_utils.format_output(
+            mode=SolverMode.PRESSURE,
             p1=float(known_pressure),
             t1=float(known_temperature),
-            p2=float(target_pressure),
-            t2=float(target_temperature),
+            at_value=float(target_pressure),
+            result=target_temperature,
             dh_vap=float(dh_vap),
         )
 
@@ -70,10 +72,11 @@ async def test_keyboard_workflow_switch_mode():
         )
 
         expected_result = bp_utils.format_output(
+            mode=SolverMode.TEMPERATURE,
             p1=float(known_pressure),
             t1=float(known_temperature),
-            p2=float(target_pressure),
-            t2=float(target_temperature),
+            at_value=float(target_temperature),
+            result=target_pressure,
             dh_vap=float(dh_vap),
         )
 
@@ -106,10 +109,11 @@ async def test_mouse_workflow_basic():
         )
 
         expected_result = bp_utils.format_output(
+            mode=SolverMode.PRESSURE,
             p1=float(known_pressure),
             t1=float(known_temperature),
-            p2=float(target_pressure),
-            t2=float(target_temperature),
+            at_value=float(target_pressure),
+            result=float(target_temperature),
             dh_vap=float(dh_vap),
         )
 
@@ -143,10 +147,11 @@ async def test_mouse_workflow_switch_mode():
         )
 
         expected_result = bp_utils.format_output(
+            mode=SolverMode.TEMPERATURE,
             p1=float(known_pressure),
             t1=float(known_temperature),
-            p2=float(target_pressure),
-            t2=float(target_temperature),
+            at_value=float(target_temperature),
+            result=float(target_pressure),
             dh_vap=float(dh_vap),
         )
 
@@ -198,8 +203,8 @@ async def test_custom_dh_used_in_temperature_calculation(mocker):
     target_pressure = "10"
     dH_vap = "30"
 
-    calculate_temperature_at_pressure = mocker.patch(
-        "boiling_point_converter.app.calculate_temperature_at_pressure", return_value=20
+    calculate_perform_calculation = mocker.patch(
+        "boiling_point_converter.app.perform_calculation", return_value=20
     )
 
     app = BoilingPointConverterApp()
@@ -218,7 +223,8 @@ async def test_custom_dh_used_in_temperature_calculation(mocker):
         await pilot.press(*dH_vap)
         await pilot.click("#calculate")
 
-        calculate_temperature_at_pressure.assert_called_once_with(
+        calculate_perform_calculation.assert_called_once_with(
+            SolverMode.PRESSURE,
             float(known_pressure),
             float(known_temperature),
             float(target_pressure),
@@ -233,8 +239,8 @@ async def test_custom_dh_used_in_pressure_calculation(mocker):
     target_temperature = "10"
     dH_vap = "30"
 
-    mock_calculate_pressure_at_temperature = mocker.patch(
-        "boiling_point_converter.app.calculate_pressure_at_temperature", return_value=20
+    mock_perform_calculation = mocker.patch(
+        "boiling_point_converter.app.perform_calculation", return_value=20
     )
 
     app = BoilingPointConverterApp()
@@ -254,7 +260,8 @@ async def test_custom_dh_used_in_pressure_calculation(mocker):
         await pilot.press(*dH_vap)
         await pilot.click("#calculate")
 
-        mock_calculate_pressure_at_temperature.assert_called_once_with(
+        mock_perform_calculation.assert_called_once_with(
+            SolverMode.TEMPERATURE,
             float(known_pressure),
             float(known_temperature),
             float(target_temperature),
@@ -322,11 +329,8 @@ async def test_calculate_with_invalid_field_notifies_user(field, value, mocker):
     mock_notify = mocker.patch(
         "boiling_point_converter.app.BoilingPointConverterApp.notify"
     )
-    mock_calculate_pressure = mocker.patch(
-        "boiling_point_converter.app.calculate_pressure_at_temperature"
-    )
-    mock_calculate_temperature = mocker.patch(
-        "boiling_point_converter.app.calculate_temperature_at_pressure"
+    mock_perform_calculation = mocker.patch(
+        "boiling_point_converter.app.perform_calculation"
     )
     app = BoilingPointConverterApp()
     async with app.run_test() as pilot:
@@ -342,8 +346,7 @@ async def test_calculate_with_invalid_field_notifies_user(field, value, mocker):
         await pilot.click("#calculate")
 
     mock_notify.assert_called_once()
-    mock_calculate_pressure.assert_not_called()
-    mock_calculate_temperature.assert_not_called()
+    mock_perform_calculation.assert_not_called()
 
 
 @pytest.mark.asyncio
@@ -351,11 +354,8 @@ async def test_calculate_with_invalid_dhvap_fails_and_notifies_user(mocker):
     mock_notify = mocker.patch(
         "boiling_point_converter.app.BoilingPointConverterApp.notify"
     )
-    mock_calculate_pressure = mocker.patch(
-        "boiling_point_converter.app.calculate_pressure_at_temperature"
-    )
-    mock_calculate_temperature = mocker.patch(
-        "boiling_point_converter.app.calculate_temperature_at_pressure"
+    mock_perform_calculation = mocker.patch(
+        "boiling_point_converter.app.perform_calculation"
     )
     app = BoilingPointConverterApp()
     async with app.run_test() as pilot:
@@ -374,5 +374,4 @@ async def test_calculate_with_invalid_dhvap_fails_and_notifies_user(mocker):
         await pilot.click("#calculate")
 
     mock_notify.assert_called_once()
-    mock_calculate_pressure.assert_not_called()
-    mock_calculate_temperature.assert_not_called()
+    mock_perform_calculation.assert_not_called()

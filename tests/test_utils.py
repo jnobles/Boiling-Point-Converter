@@ -4,10 +4,13 @@ import pytest
 from hypothesis import assume, given
 from hypothesis import strategies as st
 
+import boiling_point_converter.utils as utils
 from boiling_point_converter.utils import (
+    SolverMode,
     calculate_pressure_at_temperature,
     calculate_temperature_at_pressure,
     format_output,
+    perform_calculation,
 )
 
 
@@ -50,9 +53,37 @@ def test_same_temperature_returns_same_pressure():
 
     assert result == pytest.approx(760)
 
+@pytest.mark.parametrize(
+    "mode",
+    [
+        SolverMode.PRESSURE,
+        SolverMode.TEMPERATURE,
+    ]
+)
+def test_perform_calculation_calls_correct_calculator(mocker, mode):
+    mock_pressure = mocker.Mock(return_value=7.3)
+    mocker.patch.dict(
+        utils._CALCULATORS,
+        {mode: mock_pressure}
+    )
+    result = perform_calculation(mode, 760, 100, 10, 40.65)
+    assert result == 7.3
+    mock_pressure.assert_called_once_with(760, 100, 10, 40.65)
+
+
+def test_perform_calculation_with_invalid_solver_raises_error():
+    with pytest.raises(ValueError):
+        perform_calculation("Invalid Mode", 760, 100, 10, 40.65)
+
 
 def test_format_output():
-    result = format_output(760, 100, 10, 7.30, 40.65)
+    mode = SolverMode.PRESSURE
+    p1 = 760
+    t1 = 100
+    at_value = 10
+    dh_vap = 40.65
+    calculation_result = perform_calculation(mode, p1, t1, at_value, dh_vap)
+    result = format_output(mode, p1, t1, at_value, calculation_result, dh_vap)
 
     assert "40.65 kJ/mol" in result
     assert "760.00 torr" in result

@@ -9,12 +9,12 @@ temperature range.
 """
 
 import math
-from enum import Enum
+from enum import StrEnum
 
 from .constants import GAS_CONSTANT_J_PER_MOL_K, KELVIN_CELSIUS_OFFSET
 
 
-class SolverMode(Enum):
+class SolverMode(StrEnum):
     PRESSURE = "pressure"
     TEMPERATURE = "temperature"
 

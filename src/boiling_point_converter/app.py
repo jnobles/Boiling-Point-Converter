@@ -67,10 +67,10 @@ class BoilingPointConverterApp(App):
             dh_vap = float(self.dh_vap_input.value)
             at_value = float(self.at_value_input.value)
             mode = self.solver_mode_radioset.pressed_button.id
-            result = perform_calculation(mode, t1, p1, at_value, dh_vap)
+            result = perform_calculation(mode, p1, t1, at_value, dh_vap)
 
-            self.result_label.value = format_output(
-                mode, t1, p1, at_value, result, dh_vap
+            self.result_label.update(
+                format_output(mode, p1, t1, at_value, result, dh_vap)
             )
 
     def _validate_calculation_inputs(self):
