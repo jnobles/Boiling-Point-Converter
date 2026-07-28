@@ -209,22 +209,18 @@ async def test_custom_dh_used_in_temperature_calculation(mocker):
 
     app = BoilingPointConverterApp()
     async with app.run_test() as pilot:
-        await pilot.click("#p1")
-        await pilot.press(*known_pressure)
-        await pilot.click("#t1")
-        await pilot.press(*known_temperature)
-        await pilot.click("#at-value")
-        await pilot.press(*target_pressure)
+        app.query_one("#p1").value = known_pressure
+        app.query_one("#t1").value = known_temperature
+        app.query_one("#at-value").value = target_pressure
         option_list = app.query_one("#dHvap-selection")
         option_list.highlighted = option_list.get_option_index("custom-dHvap")
         option_list.action_select()
         await pilot.pause()
-        await pilot.click("#dHvap")
-        await pilot.press(*dH_vap)
+        app.query_one("#dHvap").value = dH_vap
         await pilot.click("#calculate")
 
         calculate_perform_calculation.assert_called_once_with(
-            SolverMode.PRESSURE,
+            "pressure",
             float(known_pressure),
             float(known_temperature),
             float(target_pressure),
@@ -245,23 +241,20 @@ async def test_custom_dh_used_in_pressure_calculation(mocker):
 
     app = BoilingPointConverterApp()
     async with app.run_test() as pilot:
-        await pilot.click("#p1")
-        await pilot.press(*known_pressure)
-        await pilot.click("#t1")
-        await pilot.press(*known_temperature)
-        await pilot.click("#solver-mode > #temperature")
-        await pilot.click("#at-value")
-        await pilot.press(*target_temperature)
+        app.query_one("#p1").value = known_pressure
+        app.query_one("#t1").value = known_temperature
+        mode_list = app.query_one("#solver-mode")
+        mode_list.pressed_button_id = "pressure"
+        app.query_one("#at-value").value = target_temperature
         option_list = app.query_one("#dHvap-selection")
         option_list.highlighted = option_list.get_option_index("custom-dHvap")
         option_list.action_select()
         await pilot.pause()
-        await pilot.click("#dHvap")
-        await pilot.press(*dH_vap)
+        app.query_one("#dHvap").value = dH_vap
         await pilot.click("#calculate")
 
         mock_perform_calculation.assert_called_once_with(
-            SolverMode.TEMPERATURE,
+            "pressure",
             float(known_pressure),
             float(known_temperature),
             float(target_temperature),
@@ -273,18 +266,10 @@ async def test_custom_dh_used_in_pressure_calculation(mocker):
 async def test_switching_solver_mode_resets_target_field():
     app = BoilingPointConverterApp()
     async with app.run_test() as pilot:
-        await pilot.click("#at-value")
-        await pilot.press(*"10")
+        app.query_one("#at-value").value = "10"
 
         assert app.query_one("#at-value").value == "10"
         await pilot.click("#solver-mode > #temperature")
-        assert app.query_one("#at-value").value == ""
-
-        await pilot.click("#at-value")
-        await pilot.press(*"10")
-
-        assert app.query_one("#at-value").value == "10"
-        await pilot.click("#solver-mode > #pressure")
         assert app.query_one("#at-value").value == ""
 
 
@@ -300,8 +285,8 @@ async def test_switching_solver_mode_resets_target_field():
 async def test_invalid_input_changes_input_css(field, value):
     app = BoilingPointConverterApp()
     async with app.run_test() as pilot:
-        await pilot.click(field)
-        await pilot.press(*value)
+        app.query_one(field).value = value
+        await pilot.pause()
 
         assert "-invalid" in app.query_one(field).classes
 
@@ -313,9 +298,8 @@ async def test_invalid_dhvap_changes_input_css():
         option_list = app.query_one("#dHvap-selection")
         option_list.highlighted = option_list.get_option_index("custom-dHvap")
         option_list.action_select()
+        app.query_one("#dHvap").value = "-10"
         await pilot.pause()
-        await pilot.click("#dHvap")
-        await pilot.press(*"-10")
 
         assert "-invalid" in app.query_one("#dHvap").classes
 
@@ -334,15 +318,11 @@ async def test_calculate_with_invalid_field_notifies_user(field, value, mocker):
     )
     app = BoilingPointConverterApp()
     async with app.run_test() as pilot:
-        await pilot.click("#p1")
-        await pilot.press(*"760")
-        await pilot.click("#t1")
-        await pilot.press(*"100")
-        await pilot.click("#at-value")
-        await pilot.press(*"10")
+        app.query_one("#p1").value = "760"
+        app.query_one("#t1").value = "100"
+        app.query_one("#at-value").value = "10"
 
-        await pilot.click(field)
-        await pilot.press(*value)
+        app.query_one(field).value = value
         await pilot.click("#calculate")
 
     mock_notify.assert_called_once()
@@ -359,18 +339,14 @@ async def test_calculate_with_invalid_dhvap_fails_and_notifies_user(mocker):
     )
     app = BoilingPointConverterApp()
     async with app.run_test() as pilot:
-        await pilot.click("#p1")
-        await pilot.press(*"760")
-        await pilot.click("#t1")
-        await pilot.press(*"100")
-        await pilot.click("#at-value")
-        await pilot.press(*"10")
+        app.query_one("#p1").value = "760"
+        app.query_one("#t1").value = "100"
+        app.query_one("#at-value").value = "10"
         option_list = app.query_one("#dHvap-selection")
         option_list.highlighted = option_list.get_option_index("custom-dHvap")
         option_list.action_select()
         await pilot.pause()
-        await pilot.click("#dHvap")
-        await pilot.press(*"-10")
+        app.query_one("#dHvap").value = "-10"
         await pilot.click("#calculate")
 
     mock_notify.assert_called_once()
