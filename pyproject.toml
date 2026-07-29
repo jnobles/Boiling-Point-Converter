@@ -5,7 +5,7 @@ authors = [
 ]
 version = "0.1.0"
 description = "TUI application for Clausius-Clapeyron boiling point calculations."
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 dependencies = ["textual>=0.70"]
 license = "MIT"
 license-files = ["LICENSE.txt"]
