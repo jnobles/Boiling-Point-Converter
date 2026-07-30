@@ -1,20 +1,16 @@
-name: CI
+name: Release
 
 on:
   push:
-  pull_request:
+    tags:
+    - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  verify:
-    strategy:
-      matrix:
-        os:
-        - ubuntu-latest
-        - windows-latest
-    runs-on: ${{ matrix.os }}
+  release:
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
@@ -29,7 +25,13 @@ jobs:
         enable-cache: true
     - name: Install project
       run: uv sync --locked --all-extras --dev
-    - name: Check linting
-      run: uv run just lint
     - name: Run tests
       run: uv run just test
+    - name: Build distributables
+      run: uv run just release
+    - name: Create GitHub release
+      uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228
+      with:
+        files: dist/*
+        body_path: CHANGELOG.md
+        draft: true

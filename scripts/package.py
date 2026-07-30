@@ -1,8 +1,8 @@
-import sys
 import shutil
+import sys
 import zipfile
-from pathlib import Path
 from importlib.metadata import version
+from pathlib import Path
 
 dist_dir = Path("dist")
 root_dir = Path(".")

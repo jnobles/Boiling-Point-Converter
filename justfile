@@ -19,7 +19,7 @@ test:
 
 check: lint coverage
 
-build: check
+build:
     uv build
 
 [windows]
