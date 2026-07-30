@@ -53,19 +53,17 @@ def test_same_temperature_returns_same_pressure():
 
     assert result == pytest.approx(760)
 
+
 @pytest.mark.parametrize(
     "mode",
     [
         SolverMode.PRESSURE,
         SolverMode.TEMPERATURE,
-    ]
+    ],
 )
 def test_perform_calculation_calls_correct_calculator(mocker, mode):
     mock_pressure = mocker.Mock(return_value=7.3)
-    mocker.patch.dict(
-        utils._CALCULATORS,
-        {mode: mock_pressure}
-    )
+    mocker.patch.dict(utils._CALCULATORS, {mode: mock_pressure})
     result = perform_calculation(mode, 760, 100, 10, 40.65)
     assert result == 7.3
     mock_pressure.assert_called_once_with(760, 100, 10, 40.65)

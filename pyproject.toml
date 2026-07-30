@@ -3,7 +3,7 @@ name = "boiling-point-converter"
 authors = [
     {name = "James Nobles"},
 ]
-version = "0.1.0"
+version = "1.0.0"
 description = "TUI application for Clausius-Clapeyron boiling point calculations."
 requires-python = ">=3.12,<3.13"
 dependencies = ["textual>=0.70"]

@@ -37,7 +37,7 @@ Download the Windows executable from the GitHub release assets and run it direct
 Download the `.whl` file from the GitHub release assets and install with:
 
 ```powershell
-pip install .\boiling_point_converter-0.1.0-py3-none-any.whl
+pip install .\boiling_point_converter-1.0.0-py3-none-any.whl
 ```
 
 ### Install from source archive
@@ -45,7 +45,7 @@ pip install .\boiling_point_converter-0.1.0-py3-none-any.whl
 Download the `.tar.gz` file from the GitHub release assets and install with:
 
 ```powershell
-pip install .\boiling_point_converter-0.1.0.tar.gz
+pip install .\boiling_point_converter-1.0.0.tar.gz
 ```
 
 Note the project was developed and tested using Python 3.12.  Other versions may work but have not been tested.
