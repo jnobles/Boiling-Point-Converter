@@ -36,6 +36,3 @@ coverage:
     uv run coverage run -m pytest
     uv run coverage report
     uv run coverage html
-
-temp:
-    @uv run git-cliff  --bumped-version
