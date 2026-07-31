@@ -15,23 +15,12 @@ a = Analysis(
     optimize=0,
 )
 pyz = PYZ(a.pure)
-splash = Splash(
-    'src/assets/splash.png',
-    binaries=a.binaries,
-    datas=a.datas,
-    text_pos=(10, 55),
-    text_size=10,
-    minify_script=True,
-    always_on_top=True,
-)
 
 exe = EXE(
     pyz,
     a.scripts,
     a.binaries,
     a.datas,
-    splash,
-    splash.binaries,
     [],
     name='Boiling Point Converter',
     debug=False,
