@@ -1,8 +1,8 @@
 import pytest
 
-import boiling_point_converter.molar_heat_of_vaporization
+import boiling_point_converter.core.molar_heat_of_vaporization
 import boiling_point_converter.utils as bp_utils
-from boiling_point_converter.app import BoilingPointConverterApp
+from boiling_point_converter.tui.app import BoilingPointConverterApp
 from boiling_point_converter.utils import SolverMode
 
 
@@ -177,7 +177,7 @@ async def test_custom_dh_toggles_and_resets_field():
 
         assert app.query_one("#dHvap").disabled
         assert app.query_one("#dHvap").value == str(
-            boiling_point_converter.molar_heat_of_vaporization.REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND[
+            boiling_point_converter.core.molar_heat_of_vaporization.REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND[
                 "water"
             ]
         )
@@ -190,7 +190,7 @@ async def test_initial_state_defaults():
         assert app.focused.id == "p1"
         assert app.query_one("#dHvap-selection").highlighted_option.id == "water"
         assert app.query_one("#dHvap").value == str(
-            boiling_point_converter.molar_heat_of_vaporization.REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND[
+            boiling_point_converter.core.molar_heat_of_vaporization.REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND[
                 "water"
             ]
         )

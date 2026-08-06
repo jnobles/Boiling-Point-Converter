@@ -5,7 +5,7 @@ a = Analysis(
     ['scripts/pyinstaller_entry.py'],
     pathex=['src'],
     binaries=[],
-    datas=[('src/boiling_point_converter/styles.tcss', 'boiling_point_converter')],
+    datas=[('src/boiling_point_converter/tui/styles.tcss', 'boiling_point_converter')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
