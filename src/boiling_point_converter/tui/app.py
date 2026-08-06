@@ -19,9 +19,11 @@ from boiling_point_converter.core.molar_heat_of_vaporization import (
     REFERENCE_HEATS_OF_VAPORIZATION,
     REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND,
 )
-from boiling_point_converter.utils import (
-    format_output,
+from boiling_point_converter.core.calculation import (
     perform_calculation,
+)
+from boiling_point_converter.tui.formatting import (
+    format_output,
 )
 from boiling_point_converter.tui.validators import (
     HeatOfVaporizationValidator,
@@ -34,7 +36,7 @@ from boiling_point_converter.tui.widgets import LabeledInput
 class BoilingPointConverterApp(App):
     BINDINGS = [Binding("ctrl+q", "quit", "Quit", show=True, priority=True)]
 
-    CSS_PATH = files("boiling_point_converter").joinpath("styles.tcss")
+    CSS_PATH = files(__package__).joinpath("styles.tcss")
 
     p1_input: Input
     t1_input: Input
