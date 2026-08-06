@@ -28,7 +28,7 @@ from boiling_point_converter.tui.validators import (
     PressureValidator,
     TemperatureValidator,
 )
-from boiling_point_converter.widgets import LabeledInput
+from boiling_point_converter.tui.widgets import LabeledInput
 
 
 class BoilingPointConverterApp(App):

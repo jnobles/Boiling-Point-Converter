@@ -1,26 +1,4 @@
-"""Data structures and reference values for molar heat of vaporization.
-
-Defines the :class:`MolarHeatOfVaporization` data model and provides a
-reference collection of molar heats of vaporization for common compounds.
-
-The included values are expressed in kilojoules per mole and are used as
-reference values for Clausius-Clapeyron calculations.
-"""
-
-from dataclasses import dataclass
-
-
-@dataclass(frozen=True)
-class MolarHeatOfVaporization:
-    """A compound and its associated molar heat of vaporization.
-
-    :param compound: The name of the compound.
-    :param dh_vap_kj_per_mol: The molar heat of vaporization measure in kilojoules per
-        mole.
-    """
-
-    compound: str
-    dh_vap_kj_per_mol: float
+from boiling_point_converter.core.models import MolarHeatOfVaporization
 
 
 REFERENCE_HEATS_OF_VAPORIZATION = sorted(
