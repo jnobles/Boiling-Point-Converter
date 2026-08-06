@@ -1,6 +1,6 @@
 import pytest
 
-from boiling_point_converter.validators import (
+from boiling_point_converter.tui.validators import (
     FloatValidator,
     HeatOfVaporizationValidator,
     PressureValidator,

@@ -1,4 +1,4 @@
-from boiling_point_converter.app import BoilingPointConverterApp
+from boiling_point_converter.tui.app import BoilingPointConverterApp
 
 
 def test_tui_visual(snap_compare):

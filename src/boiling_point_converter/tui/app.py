@@ -15,20 +15,20 @@ from textual.widgets import (
 )
 from textual.widgets.option_list import Option
 
-from .molar_heat_of_vaporization import (
+from boiling_point_converter.core.molar_heat_of_vaporization import (
     REFERENCE_HEATS_OF_VAPORIZATION,
     REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND,
 )
-from .utils import (
+from boiling_point_converter.utils import (
     format_output,
     perform_calculation,
 )
-from .validators import (
+from boiling_point_converter.tui.validators import (
     HeatOfVaporizationValidator,
     PressureValidator,
     TemperatureValidator,
 )
-from .widgets import LabeledInput
+from boiling_point_converter.widgets import LabeledInput
 
 
 class BoilingPointConverterApp(App):

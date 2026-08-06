@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 
 from textual.validation import ValidationResult, Validator
 
-from .constants import KELVIN_CELSIUS_OFFSET
+from boiling_point_converter.core.constants import KELVIN_CELSIUS_OFFSET
 
 
 class FloatValidator(Validator, ABC):

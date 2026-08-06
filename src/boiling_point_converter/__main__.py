@@ -1,6 +1,6 @@
 """Provides the main entry-point for the TUI."""
 
-from .app import BoilingPointConverterApp
+from boiling_point_converter.tui.app import BoilingPointConverterApp
 
 
 def main() -> None:
