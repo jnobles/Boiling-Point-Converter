@@ -9,7 +9,11 @@ temperature range.
 """
 
 import math
-from boiling_point_converter.core.constants import GAS_CONSTANT_J_PER_MOL_K, KELVIN_CELSIUS_OFFSET
+
+from boiling_point_converter.core.constants import (
+    GAS_CONSTANT_J_PER_MOL_K,
+    KELVIN_CELSIUS_OFFSET,
+)
 from boiling_point_converter.core.models import SolverMode
 
 

@@ -1,6 +1,5 @@
 from boiling_point_converter.core.models import MolarHeatOfVaporization
 
-
 REFERENCE_HEATS_OF_VAPORIZATION = sorted(
     [
         MolarHeatOfVaporization(compound="acetic acid", dh_vap_kj_per_mol=37.16),
