@@ -15,12 +15,12 @@ from textual.widgets import (
 )
 from textual.widgets.option_list import Option
 
+from boiling_point_converter.core.calculation import (
+    perform_calculation,
+)
 from boiling_point_converter.core.molar_heat_of_vaporization import (
     REFERENCE_HEATS_OF_VAPORIZATION,
     REFERENCE_HEATS_OF_VAPORIZATION_BY_COMPOUND,
-)
-from boiling_point_converter.core.calculation import (
-    perform_calculation,
 )
 from boiling_point_converter.tui.formatting import (
     format_output,

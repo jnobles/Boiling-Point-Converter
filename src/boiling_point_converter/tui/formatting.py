@@ -1,5 +1,6 @@
 from boiling_point_converter.core.models import SolverMode
 
+
 def format_output(
     mode: str | SolverMode,
     p1: float,
