@@ -15,3 +15,9 @@ form.addEventListener("submit", (event) => {
         atValue,
     });
 });
+
+async function main(){
+        let pyodide = await loadPyodide();
+        console.log(pyodide.runPython("1 + 2"));
+      }
+      main();
