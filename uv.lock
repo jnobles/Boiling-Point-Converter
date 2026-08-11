@@ -15,9 +15,6 @@ wheels = [
 name = "boiling-point-converter"
 version = "1.0.1"
 source = { editable = "." }
-dependencies = [
-    { name = "textual" },
-]
 
 [package.dev-dependencies]
 dev = [
@@ -32,9 +29,11 @@ dev = [
     { name = "ruff" },
     { name = "rust-just" },
 ]
+tui = [
+    { name = "textual" },
+]
 
 [package.metadata]
-requires-dist = [{ name = "textual", specifier = ">=0.70" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -49,6 +48,7 @@ dev = [
     { name = "ruff", specifier = ">=0.15.20" },
     { name = "rust-just", specifier = ">=1.57.0" },
 ]
+tui = [{ name = "textual", specifier = ">=8.2.8" }]
 
 [[package]]
 name = "colorama"
