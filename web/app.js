@@ -15,8 +15,9 @@ worker.addEventListener("message", (event) => {
     }
     if (event.data.type === "dataTable") {
         const dataTable = JSON.parse(event.data.json);
-        const fieldset = document.getElementById("heat-of-vaporization");
+        const dhVapList = document.getElementById("dh-vap-options");
         for (const item of dataTable) {
+            const listItem = document.createElement("li");
             const option = document.createElement("input");
             option.id = `dh-vap-${item.compound.replaceAll(" ", "-")}`;
             option.type = "radio";
@@ -27,8 +28,10 @@ worker.addEventListener("message", (event) => {
             label.htmlFor = option.id;
             label.textContent = item.compound;
 
-            fieldset.appendChild(option);
-            fieldset.appendChild(label);
+            listItem.appendChild(option);
+            listItem.appendChild(label);
+
+            dhVapList.appendChild(listItem);
         }
     }
 });
@@ -38,11 +41,11 @@ const form = document.getElementById("calculator");
 form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const referencePressure = Number(document.getElementById("reference-pressure").value);
-    const referenceTemperature = Number(document.getElementById("reference-temperature").value);
+    const referencePressure = document.getElementById("reference-pressure").value.valueAsNumber;
+    const referenceTemperature = document.getElementById("reference-temperature").value.valueAsNumber;
     const mode = form.elements["solver-mode"].value;
-    const atValue = Number(document.getElementById("at-value").value);
-    const dhVap = Number(document.getElementById("dh-vap").value);
+    const atValue = document.getElementById("at-value").value.valueAsNumber;
+    const dhVap = document.getElementById("dh-vap").value.valueAsNumber;
 
     worker.postMessage({
         type: "calculate",
@@ -59,8 +62,14 @@ const dhVap = document.getElementById("dh-vap");
 
 fieldset.addEventListener("change", (event) => {
     if (event.target.type === "radio") {
-        dhVap.value = event.target.value === "custom"
-            ? ""
-            : event.target.value
+        dhVap.value = event.target.value;
     }
 });
+
+dhVap.addEventListener("input", () => {
+    if (dhVap.value !== "") {
+        for (const radio of form.elements["dh-vap"]) {
+            radio.checked = false;
+        }
+    }
+})

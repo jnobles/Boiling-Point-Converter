@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boiling Point Calculator</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script defer src="./app.js"></script>
+</head>
+<body>
+<header>
+    <h1>Boiling Point Calculator</h1>
+</header>
+<form id="calculator">
+    <fieldset id="reference-values">
+        <legend>Reference Values</legend>
+        <div class="labeled-input">
+            <label for="reference-pressure">Pressure</label>
+            <div class="input-with-unit">
+                <input id="reference-pressure" type="number" step="any" required>
+                <span>torr</span>
+            </div>
+        </div>
+        <div class="labeled-input">
+            <label for="reference-temperature">Temperature</label>
+            <div class="input-with-unit">
+                <input id="reference-temperature" type="number" step="any" required>
+                <span>°C</span>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset id="target-value">
+        <legend>Target Value</legend>
+        <input id="mode-pressure" type="radio" name="solver-mode" value="pressure" checked>
+        <label for="mode-pressure">Pressure</label>
+        <input id="mode-temperature" type="radio" name="solver-mode" value="temperature">
+        <label for="mode-temperature">Temperature</label>
+        <div class="input-with-unit">
+            <input id="at-value" type="number" step="any" required>
+            <span>torr</span>
+        </div>
+    </fieldset>
+    <fieldset id="heat-of-vaporization">
+        <legend>Heat of Vaporization</legend>
+        <div class="input-with-unit">
+            <input id="dh-vap" type="number" step="any" required>
+            <span>kJ/mol</span>
+        </div>
+        <ul id="dh-vap-options">
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend>Result</legend>
+        <output id="result"></output>
+    </fieldset>
+    <button id="calculate" type="submit" disabled>Loading calculator...</button>
+</form>
+</body>
+<footer>
+    <p>&copy; 2026 James Nobles. Licensed under the <a href="https://opensource.org/license/mit">MIT License</a>.</p>
+    <p><a href="https://github.com/jnobles/Boiling-Point-Converter">View source on GitHub</a></p>
+</footer>
+</html>

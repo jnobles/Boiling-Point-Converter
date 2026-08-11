@@ -1,0 +1,55 @@
+body {
+    width: min(100% - 2rem, 40rem);
+    margin-inline: auto;
+}
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+form button {
+    grid-column: 1 / -1;
+    font-size: 1.5rem;
+}
+.labeled-input {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    align-items: center;
+}
+.input-with-unit {
+    position: relative;
+    width: 100%;
+}
+.input-with-unit input {
+    width: 100%;
+    box-sizing: border-box;
+}
+.input-with-unit span {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-right: 1.6em;
+    pointer-events: none;
+    font-size: 0.75em;
+}
+#reference-values {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+#dh-vap-options {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+#dh-vap-options input {
+    margin-right: 0.25em;
+}
+@media (max-width: 38rem) {
+    form {
+        grid-template-columns: 1fr;
+    }
+}
