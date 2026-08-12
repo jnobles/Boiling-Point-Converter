@@ -37,20 +37,28 @@ async function calculate(data) {
     pyodide.globals.set("at_value", data.atValue);
     pyodide.globals.set("dh_vap", data.dhVap);
 
-    const result = pyodide.runPython(`
+    try {
+        const result = pyodide.runPython(`
         perform_calculation(
             mode=mode,
             p1=p1,
             t1=t1,
             at_value=at_value,
             dh_vap=dh_vap,
-        )
-    `);
+            )
+        `);
 
-    postMessage({
-        type: "result",
-        result: result,
-    })
+        postMessage({
+            type: "result",
+            result: result,
+        });
+    } catch (error) {
+        postMessage({
+            type: "error",
+            message: error.toString(),
+        });
+    }
+
 }
 
 self.addEventListener("message", (event) => {

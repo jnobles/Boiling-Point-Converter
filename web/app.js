@@ -34,6 +34,10 @@ worker.addEventListener("message", (event) => {
             dhVapList.appendChild(listItem);
         }
     }
+    if (event.data.type === "error") {
+        const resultOutput = document.getElementById("result");
+        resultOutput.textContent = event.data.message;
+    }
 });
 
 const form = document.getElementById("calculator");
