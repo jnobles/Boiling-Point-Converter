@@ -2,6 +2,10 @@ import {
     loadPyodide
 } from "https://cdn.jsdelivr.net/pyodide/v314.0.4/full/pyodide.mjs"
 
+import {
+    packageUrl
+} from "./package.js";
+
 let pyodide;
 
 async function initializePyodide() {
@@ -9,7 +13,7 @@ async function initializePyodide() {
 
     await pyodide.loadPackage("micropip");
     const micropip = pyodide.pyimport("micropip");
-    await micropip.install("./boiling_point_converter-1.0.1-py3-none-any.whl");
+    await micropip.install(packageUrl);
     pyodide.runPython(`from boiling_point_converter.core import perform_calculation`)
     console.log("Pyodide ready");
     postMessage({
