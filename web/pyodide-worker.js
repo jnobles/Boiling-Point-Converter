@@ -17,7 +17,7 @@ async function initializePyodide() {
     });
 }
 
-async function heats_of_vaporization() {
+function heats_of_vaporization() {
     const heats_of_vaporization = pyodide.runPython(`
         import json
         from dataclasses import asdict
@@ -30,7 +30,7 @@ async function heats_of_vaporization() {
     });
 }
 
-async function calculate(data) {
+function calculate(data) {
     pyodide.globals.set("p1", data.p1);
     pyodide.globals.set("t1", data.t1);
     pyodide.globals.set("mode", data.mode);
@@ -50,7 +50,14 @@ async function calculate(data) {
 
         postMessage({
             type: "result",
-            result: result,
+            result: {
+                mode: data.mode,
+                p1: data.p1,
+                t1: data.t1,
+                atValue: data.atValue,
+                dhVap: data.dhVap,
+                result: result,
+            },
         });
     } catch (error) {
         postMessage({

@@ -48,6 +48,9 @@ form button {
 #dh-vap-options input {
     margin-right: 0.25em;
 }
+#result {
+    white-space: pre-line;
+}
 @media (max-width: 38rem) {
     form {
         grid-template-columns: 1fr;

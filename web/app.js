@@ -11,7 +11,7 @@ worker.addEventListener("message", (event) => {
     }
     if (event.data.type === "result") {
         const resultOutput = document.getElementById("result");
-        resultOutput.textContent = event.data.result;
+        resultOutput.textContent = formatResult(event.data.result);
     }
     if (event.data.type === "dataTable") {
         const dataTable = JSON.parse(event.data.json);
@@ -45,11 +45,11 @@ const form = document.getElementById("calculator");
 form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const referencePressure = document.getElementById("reference-pressure").value.valueAsNumber;
-    const referenceTemperature = document.getElementById("reference-temperature").value.valueAsNumber;
+    const referencePressure = document.getElementById("reference-pressure").valueAsNumber;
+    const referenceTemperature = document.getElementById("reference-temperature").valueAsNumber;
     const mode = form.elements["solver-mode"].value;
-    const atValue = document.getElementById("at-value").value.valueAsNumber;
-    const dhVap = document.getElementById("dh-vap").value.valueAsNumber;
+    const atValue = document.getElementById("at-value").valueAsNumber;
+    const dhVap = document.getElementById("dh-vap").valueAsNumber;
 
     worker.postMessage({
         type: "calculate",
@@ -77,3 +77,26 @@ dhVap.addEventListener("input", () => {
         }
     }
 })
+
+function formatResult(result) {
+    let p2;
+    let t2;
+    if (result.mode === "pressure") {
+        p2 = result.atValue;
+        t2 = result.result;
+    } else if (result.mode === "temperature") {
+        t2 = result.atValue;
+        p2 = result.result;
+    }
+    return (
+        `Using Heat of Vaporization: ${result.dhVap.toFixed(2)} kJ/mol,
+
+Pressure: ${result.p1.toFixed(2)} torr
+Boiling Point: ${result.t1.toFixed(2)} °C
+
+Equates to,
+
+Pressure: ${p2.toFixed(2)} torr
+Boiling Point: ${t2.toFixed(2)} °C`
+    )
+}
