@@ -61,10 +61,10 @@ form.addEventListener("submit", (event) => {
     });
 });
 
-const fieldset = document.getElementById("heat-of-vaporization");
+const fieldsetDhVap = document.getElementById("heat-of-vaporization");
 const dhVap = document.getElementById("dh-vap");
 
-fieldset.addEventListener("change", (event) => {
+fieldsetDhVap.addEventListener("change", (event) => {
     if (event.target.type === "radio") {
         dhVap.value = event.target.value;
     }
@@ -100,3 +100,16 @@ Pressure: ${p2.toFixed(2)} torr
 Boiling Point: ${t2.toFixed(2)} °C`
     )
 }
+
+const atValueUnit = document.getElementById("at-value-unit");
+const fieldsetAtValueUnit = document.getElementById("target-value");
+
+fieldsetAtValueUnit.addEventListener("change", (event) => {
+    if (event.target.type === "radio") {
+        if (event.target.value === "pressure") {
+            atValueUnit.textContent = "torr";
+        } else if (event.target.value === "temperature") {
+            atValueUnit.textContent = "°C";
+        }
+    }
+});
