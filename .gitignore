@@ -14,6 +14,7 @@ build
 
 # Testing
 .pytest_cache
+.hypothesis
 /snapshot_report.html
 
 # Misc Binaries
