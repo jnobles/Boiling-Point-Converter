@@ -6,7 +6,7 @@ from boiling_point_converter.core.calculation import (
     calculate_temperature_at_pressure,
 )
 from boiling_point_converter.core.models import SolverMode
-from boiling_point_converter.tui.app import BoilingPointConverterApp
+from boiling_point_converter.tui.app import BoilingPointConverterApp, FloatValidator
 from boiling_point_converter.tui.formatting import format_output
 
 
@@ -284,36 +284,9 @@ async def test_switching_solver_mode_resets_target_field():
         ("#p1", "-1"),
         ("#t1", "-300"),
         ("#at-value", "-999"),
-    ],
-)
-async def test_invalid_input_changes_input_css(field, value):
-    app = BoilingPointConverterApp()
-    async with app.run_test() as pilot:
-        app.query_one(field).value = value
-        await pilot.pause()
-
-        assert "-invalid" in app.query_one(field).classes
-
-
-@pytest.mark.asyncio
-async def test_invalid_dhvap_changes_input_css():
-    app = BoilingPointConverterApp()
-    async with app.run_test() as pilot:
-        option_list = app.query_one("#dHvap-selection")
-        option_list.highlighted = option_list.get_option_index("custom-dHvap")
-        option_list.action_select()
-        app.query_one("#dHvap").value = "-10"
-        await pilot.pause()
-
-        assert "-invalid" in app.query_one("#dHvap").classes
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "field,value", [("#p1", "-1"), ("#t1", "-300"), ("#at-value", "-999")]
+    ]
 )
 async def test_calculate_with_invalid_field_notifies_user(field, value, mocker):
-    # TODO: Consider asserting toast message
     mock_notify = mocker.patch(
         "boiling_point_converter.tui.app.BoilingPointConverterApp.notify"
     )
@@ -355,3 +328,35 @@ async def test_calculate_with_invalid_dhvap_fails_and_notifies_user(mocker):
 
     mock_notify.assert_called_once()
     mock_perform_calculation.assert_not_called()
+
+
+class TestFloatValidator:
+    validator = FloatValidator("Value")
+
+    def test_float_validator_rejects_empty(self):
+        result = self.validator.validate("")
+
+        assert result.is_valid is False
+        assert result.failure_descriptions == ["Value required."]
+
+    def test_float_validator_rejects_non_numeric(self):
+        result = self.validator.validate("abc")
+
+        assert result.is_valid is False
+        assert result.failure_descriptions == ["Value must be numeric."]
+
+    @pytest.mark.parametrize(
+        "value",
+        [
+            "-1",
+            "0",
+            "1",
+            "1.5",
+            "1e5",
+        ],
+    )
+    def test_float_accepts_numeric_values(self, value):
+        result = self.validator.validate(value)
+
+        assert result.is_valid is True
+        assert result.failure_descriptions == []

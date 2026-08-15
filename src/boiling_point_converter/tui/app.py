@@ -14,6 +14,10 @@ from textual.widgets import (
     RadioSet,
 )
 from textual.widgets.option_list import Option
+from textual.validation import (
+    Validator,
+    ValidationResult,
+)
 
 from boiling_point_converter.core.calculation import (
     perform_calculation,
@@ -25,12 +29,24 @@ from boiling_point_converter.core.molar_heat_of_vaporization import (
 from boiling_point_converter.tui.formatting import (
     format_output,
 )
-from boiling_point_converter.tui.validators import (
-    HeatOfVaporizationValidator,
-    PressureValidator,
-    TemperatureValidator,
-)
 from boiling_point_converter.tui.widgets import LabeledInput
+
+
+class FloatValidator(Validator):
+    def __init__(self, field_name: str):
+        super().__init__()
+        self.field_name = field_name
+
+    def validate(self, value: str) -> ValidationResult:
+        if value == "":
+            return self.failure(f"{self.field_name} required.")
+
+        try:
+            float(value)
+        except ValueError:
+            return self.failure(f"{self.field_name} must be numeric.")
+
+        return self.success()
 
 
 class BoilingPointConverterApp(App):
@@ -90,11 +106,11 @@ class BoilingPointConverterApp(App):
         if event.pressed.id == "pressure":
             self.at_value_input.value = ""
             self.at_value_input.placeholder = "torr"
-            self.at_value_input.validators = [PressureValidator()]
+            self.at_value_input.validators = [FloatValidator("Pressure")]
         elif event.pressed.id == "temperature":
             self.at_value_input.value = ""
             self.at_value_input.placeholder = "\u00b0C"
-            self.at_value_input.validators = [TemperatureValidator()]
+            self.at_value_input.validators = [FloatValidator("Temperature")]
 
     def compose(self) -> ComposeResult:
         option_list = []
@@ -113,14 +129,14 @@ class BoilingPointConverterApp(App):
                 input_id="p1",
                 placeholder="torr",
                 type="number",
-                validators=[PressureValidator()],
+                validators=[FloatValidator("Pressure")],
             )
             yield LabeledInput(
                 "Enter the boiling point at this pressure:",
                 input_id="t1",
                 placeholder="\u00b0C",
                 type="number",
-                validators=[TemperatureValidator()],
+                validators=[FloatValidator("Temperature")],
             )
             with Vertical():
                 with RadioSet(id="solver-mode"):
@@ -130,7 +146,7 @@ class BoilingPointConverterApp(App):
                     id="at-value",
                     placeholder="torr",
                     type="number",
-                    validators=[PressureValidator()],
+                    validators=[FloatValidator("Pressure")],
                 )
             yield Button("Calculate", id="calculate")
             yield Label(id="result")
@@ -140,7 +156,7 @@ class BoilingPointConverterApp(App):
                 input_id="dHvap",
                 placeholder="\u0394H vap (kJ/mol)",
                 type="number",
-                validators=[HeatOfVaporizationValidator()],
+                validators=[FloatValidator("Heat of Vaporization")],
                 disabled=True,
             )
             yield OptionList(*option_list, id="dHvap-selection")
