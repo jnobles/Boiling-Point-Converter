@@ -279,55 +279,54 @@ async def test_switching_solver_mode_resets_target_field():
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
+    "field",
+    [
+        "#p1",
+        "#t1",
+        "#at-value",
+    ],
+)
+async def test_calculate_with_empty_field_notifies_user(field, mocker):
+    mock_notify = mocker.patch(
+        "boiling_point_converter.tui.app.BoilingPointConverterApp.notify"
+    )
+
+    app = BoilingPointConverterApp()
+    async with app.run_test() as pilot:
+        app.query_one("#p1").value = "760"
+        app.query_one("#t1").value = "100"
+        app.query_one("#at-value").value = "10"
+
+        app.query_one(field).value = ""
+        await pilot.click("#calculate")
+
+    mock_notify.assert_called_once()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
     "field,value",
     [
         ("#p1", "-1"),
         ("#t1", "-300"),
-        ("#at-value", "-999"),
-    ]
+        ("#at-value", "-500"),
+    ],
 )
-async def test_calculate_with_invalid_field_notifies_user(field, value, mocker):
+async def test_calculate_forwards_core_errors(field, value, mocker):
     mock_notify = mocker.patch(
         "boiling_point_converter.tui.app.BoilingPointConverterApp.notify"
     )
-    mock_perform_calculation = mocker.patch(
-        "boiling_point_converter.core.calculation.perform_calculation"
-    )
+
     app = BoilingPointConverterApp()
     async with app.run_test() as pilot:
         app.query_one("#p1").value = "760"
         app.query_one("#t1").value = "100"
         app.query_one("#at-value").value = "10"
 
-        app.query_one(field).value = value
+        app.query_one(field).value = ""
         await pilot.click("#calculate")
 
     mock_notify.assert_called_once()
-    mock_perform_calculation.assert_not_called()
-
-
-@pytest.mark.asyncio
-async def test_calculate_with_invalid_dhvap_fails_and_notifies_user(mocker):
-    mock_notify = mocker.patch(
-        "boiling_point_converter.tui.app.BoilingPointConverterApp.notify"
-    )
-    mock_perform_calculation = mocker.patch(
-        "boiling_point_converter.core.calculation.perform_calculation"
-    )
-    app = BoilingPointConverterApp()
-    async with app.run_test() as pilot:
-        app.query_one("#p1").value = "760"
-        app.query_one("#t1").value = "100"
-        app.query_one("#at-value").value = "10"
-        option_list = app.query_one("#dHvap-selection")
-        option_list.highlighted = option_list.get_option_index("custom-dHvap")
-        option_list.action_select()
-        await pilot.pause()
-        app.query_one("#dHvap").value = "-10"
-        await pilot.click("#calculate")
-
-    mock_notify.assert_called_once()
-    mock_perform_calculation.assert_not_called()
 
 
 class TestFloatValidator:

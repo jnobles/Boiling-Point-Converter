@@ -3,6 +3,10 @@ from importlib.resources import files
 from textual import on
 from textual.app import App, Binding, ComposeResult
 from textual.containers import Grid, Vertical
+from textual.validation import (
+    ValidationResult,
+    Validator,
+)
 from textual.widgets import (
     Button,
     Footer,
@@ -14,12 +18,9 @@ from textual.widgets import (
     RadioSet,
 )
 from textual.widgets.option_list import Option
-from textual.validation import (
-    Validator,
-    ValidationResult,
-)
 
 from boiling_point_converter.core.calculation import (
+    InvalidPhysicalProperty,
     perform_calculation,
 )
 from boiling_point_converter.core.molar_heat_of_vaporization import (
@@ -75,31 +76,27 @@ class BoilingPointConverterApp(App):
 
     @on(Button.Pressed, "#calculate")
     def calculate(self, event: Button.Pressed) -> None:
-        try:
-            self._validate_calculation_inputs()
-        except ValueError:
+        if not all([item.is_valid for item in self.query(Input)]):
+            for item in self.query(Input):
+                if not item.is_valid:
+                    self.notify(
+                        "\n".join(item.validate(item.value).failure_descriptions)
+                    )
             return
-        else:
+
+        try:
             p1 = float(self.p1_input.value)
             t1 = float(self.t1_input.value)
             dh_vap = float(self.dh_vap_input.value)
             at_value = float(self.at_value_input.value)
             mode = self.solver_mode_radioset.pressed_button.id
             result = perform_calculation(mode, p1, t1, at_value, dh_vap)
-
+        except InvalidPhysicalProperty as e:
+            self.notify(str(e))
+        else:
             self.result_label.update(
                 format_output(mode, p1, t1, at_value, result, dh_vap)
             )
-
-    def _validate_calculation_inputs(self):
-        failing_validation = False
-        for item in self.query(Input):
-            response = item.validate(item.value)
-            if not item.is_valid:
-                self.notify("\n".join(response.failure_descriptions))
-                failing_validation = True
-        if failing_validation:
-            raise ValueError()
 
     @on(RadioSet.Changed, "#solver-mode")
     def update_solver_mode(self, event: RadioSet.Changed) -> None:

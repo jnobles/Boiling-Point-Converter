@@ -17,13 +17,14 @@ from boiling_point_converter.core.constants import (
 from boiling_point_converter.core.models import SolverMode
 
 
-class InvalidPhysicalProperty(ValueError):
-    ...
+class InvalidPhysicalProperty(ValueError): ...
 
 
 def _validate_temperature(value: float):
-    if value <= - KELVIN_CELSIUS_OFFSET:
-        raise InvalidPhysicalProperty(f"Temperature must be greater than absolute zero: {value}")
+    if value <= -KELVIN_CELSIUS_OFFSET:
+        raise InvalidPhysicalProperty(
+            f"Temperature must be greater than absolute zero: {value}"
+        )
 
 
 def _validate_pressure(value: float):
@@ -33,7 +34,9 @@ def _validate_pressure(value: float):
 
 def _validate_heat_of_vaporization(value: float):
     if value <= 0:
-        raise InvalidPhysicalProperty(f"Heat of vaporization must be greater than zero: {value}")
+        raise InvalidPhysicalProperty(
+            f"Heat of vaporization must be greater than zero: {value}"
+        )
 
 
 def calculate_temperature_at_pressure(
@@ -102,8 +105,8 @@ def calculate_pressure_at_temperature(
 
     _validate_pressure(pressure_torr)
     _validate_temperature(temperature_c)
+    _validate_heat_of_vaporization(dh_vap_kj_per_mol)
     _validate_temperature(target_temperature_c)
-    _validate_pressure(dh_vap_kj_per_mol)
 
     dh_vap_j_per_mol = dh_vap_kj_per_mol * 1000
     temperature_k = temperature_c + KELVIN_CELSIUS_OFFSET
